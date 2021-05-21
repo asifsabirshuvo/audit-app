@@ -3,49 +3,13 @@ import React from "react";
 import axios from "axios";
 import { useState } from "react";
 import AuditItem from './../Components/AuditItem';
+import {Link, useHistory } from "react-router-dom";
+import Button from '@material-ui/core/Button';
 
 function AllAudits() {
 	const [data, setData] = useState([]);
 	const [loader, setLoader] = useState(true);
-
-    // var del = async (index) => {
-    //     console.log("inside del");
-    
-    //     var bearer = "Bearer " + localStorage.getItem("token");
-    
-    //     console.log(list[index]._id);
-    
-    //     const requestOptions = {
-    //       method: "PUT",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: bearer,
-    //       },
-    //       body: JSON.stringify({ productId: list[index]._id }),
-    //     };
-    //     //show loader now
-    //     setLoader(true);
-    
-    //     const response = await fetch(
-    //       "https://api.rannaghor.xyz/seller/delete-product",
-    //       requestOptions
-    //     );
-    //     const data = await response.json();
-    
-    //     //remove loader
-    //     setLoader(false);
-    
-    //     console.log(data);
-    //     console.log(response.ok);
-    //     if (response.ok) {
-    //       //all good so look for all product
-    //       showSnackBar("Product deleted!");
-    //       refreshList();
-    //     } else {
-    //       //deleting error
-    //       showSnackBar("Error deleting");
-    //     }
-    //   };
+    const history = useHistory();
 
     console.log("hi");
 	//self invoing function before render is complete
@@ -74,10 +38,23 @@ function AllAudits() {
             setLoader(false);
 		}
 	}
+      const edit = (code) => {
+        console.log("from edit");
+    
+      };
 
 	return (
 		<div Style="margin:auto; text-align:center; width:80%; justifyContent:center; alignItems:center; ">
-				{data.map((item)=> {
+			<br></br>
+            <Link  to="/add-audit" Style="color:gray;text-decoration:none;">
+            <div Style="display:inline-block;"></div>
+            <span Style="font-size:19px;">Want to make an entry? &nbsp;&nbsp;</span>
+            <Button variant="contained" color="primary">
+                Click Here
+            </Button>
+            </Link>
+
+            	{data.map((item)=> {
 					 return <AuditItem
                      code={item.code}
                      name={item.name}
