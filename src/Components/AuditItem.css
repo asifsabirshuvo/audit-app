@@ -1,0 +1,10 @@
+.logParent {
+  background-color: #EEEEEE; 
+  padding : 12px;
+  color: grey;
+} 
+.br-bar{
+  height: 2px;
+  border:none;
+  background-color: #E6E6E6;
+}
