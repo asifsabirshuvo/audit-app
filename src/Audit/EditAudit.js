@@ -46,7 +46,7 @@ export default function EditAudit() {
     }, []);
 
     async function getSingleData(code){
-      const response = await axios.get('http://localhost:4000/api/v1/audit/'+code);
+      const response = await axios.get('http://api.asifsabir.me/api/v1/audit/'+code);
       
       if(response.data.success){
         const data = response.data.message;
@@ -63,7 +63,7 @@ export default function EditAudit() {
   };
 
     async function saveData(name, address,description, latitude, longitude){
-        const response = await axios.patch('http://localhost:4000/api/v1/audit', {
+        const response = await axios.patch('http://api.asifsabir.me/api/v1/audit', {
             code: code,
             name: name,
             address: address,

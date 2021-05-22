@@ -48,7 +48,7 @@ function AllAudits() {
 
 		try {
 			const response = await fetch(
-				"http://localhost:4000/api/v1/audit?page=1&limit=10",
+				"http://api.asifsabir.me/api/v1/audit?page=1&limit=10",
 				requestOptions
 			);
 			setLoader(false);
@@ -66,7 +66,7 @@ function AllAudits() {
 		//show loader now
 		try {
 			const response = await axios.delete(
-				"http://localhost:4000/api/v1/audit/" + code
+				"http://api.asifsabir.me/api/v1/audit/" + code
 			);
 			if (response.data.success) {
 				history.go(0);
