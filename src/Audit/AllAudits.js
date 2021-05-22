@@ -20,7 +20,11 @@ function AllAudits() {
 	}, []);
 
 	React.useEffect(()=> {
-		localStorage.setItem("username", userName);
+		if(localStorage.getItem("username")===null){
+			localStorage.setItem("username", "Anonymous");
+			setUserName(localStorage.getItem("Anonymous"));
+		}else{
+		}
     },[userName])
 
 
@@ -73,7 +77,7 @@ function AllAudits() {
 	};
 	const updateUserName =  (e) => {
          setUserName(e.target.value);
-		localStorage.setItem("username", userName);
+		 localStorage.setItem("username", e.target.value);
       };
 	return (
 		<div>

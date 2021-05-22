@@ -70,9 +70,7 @@ export default function EditAudit() {
             description: description,
             latitude: latitude,
             longitude: longitude,
-            createdBy: 'asif',
-            updatedBy: 'asif' 
-
+            updatedBy: localStorage.getItem("username") 
           });
           if(response.data.success){
             history.push("/");

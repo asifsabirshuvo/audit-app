@@ -42,8 +42,8 @@ export default function AddAudit() {
             description: description,
             latitude: latitude,
             longitude: longitude,
-            createdBy: 'asif',
-            updatedBy: 'asif' 
+            createdBy: localStorage.getItem("username"),
+            updatedBy: localStorage.getItem("username") 
 
           });
           if(response.data.success){
