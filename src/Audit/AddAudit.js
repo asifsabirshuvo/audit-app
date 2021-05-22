@@ -36,7 +36,7 @@ export default function AddAudit() {
 
 
     async function saveData(name, address,description, latitude, longitude){
-        const response = await axios.post('http://api.asifsabir.me/api/v1/audit', {
+        const response = await axios.post('https://api.asifsabir.me/api/v1/audit', {
             name: name,
             address: address,
             description: description,
