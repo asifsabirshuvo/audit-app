@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   });
 
 function AuditItem({code,name,address,description, latitude,
-     longitude,  createdAt, updatedAt, createdBy, updatedBy, edit}) {
+     longitude,  createdAt, updatedAt, createdBy, updatedBy, edit, del}) {
     const classes = useStyles();
     return (
       <Card className={classes.root}>
@@ -42,7 +42,7 @@ function AuditItem({code,name,address,description, latitude,
           <Button size="small" color="primary" onClick={() => edit(code)}>
             EDIT
           </Button>
-          <Button size="small" color="secondary">
+          <Button size="small" color="secondary" onClick={() => del(code)}>
             DELETE
           </Button>
         </CardActions>

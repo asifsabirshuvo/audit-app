@@ -4,6 +4,7 @@ import { useState } from "react";
 import AuditItem from './../Components/AuditItem';
 import {Link, useHistory } from "react-router-dom";
 import Button from '@material-ui/core/Button';
+import axios from "axios";
 
 function AllAudits() {
 	const [data, setData] = useState([]);
@@ -15,6 +16,7 @@ function AllAudits() {
 	React.useEffect(() => {
 		tryInfo();
 	}, []);
+
 
 	async function tryInfo() {
 		// POST request using fetch with async/await
@@ -42,6 +44,20 @@ function AllAudits() {
 
       };
 
+const del = async (code) => {
+
+
+	//show loader now
+	try {
+		const response = await axios.delete('http://localhost:4000/api/v1/audit/'+code);
+		if(response.data.success){
+			history.go(0)		}
+	} catch (err) {
+		setLoader(false);
+	}
+		
+};
+
 
 	return (
 		<div Style="margin:auto; text-align:center; width:80%; justifyContent:center; alignItems:center; ">
@@ -67,6 +83,7 @@ function AllAudits() {
                      createdBy={item.createdBy}
                      updatedBy={item.updatedBy}
                      edit = {edit}
+                     del = {del}
                    />
 				})}
 			{/* <Skeleton width={300} />
