@@ -1,5 +1,6 @@
 import Skeleton from "react-loading-skeleton";
 import React from "react";
+import TextField from '@material-ui/core/TextField';
 import { useState } from "react";
 import AuditItem from "./../Components/AuditItem";
 import { Link, useHistory } from "react-router-dom";
@@ -9,6 +10,7 @@ import axios from "axios";
 function AllAudits() {
 	const [data, setData] = useState([]);
 	const [loader, setLoader] = useState(true);
+	const [userName, setUserName] = useState('Anonymous');
 	const history = useHistory();
 
 	console.log("hi");
@@ -17,7 +19,20 @@ function AllAudits() {
 		renderList();
 	}, []);
 
+	React.useEffect(()=> {
+		localStorage.setItem("username", userName);
+    },[userName])
+
+
 	async function renderList() {
+		if(localStorage.getItem("username")===null){
+			localStorage.setItem("username", "Anonymous");
+			setUserName(localStorage.getItem("Anonymous"));
+		}
+		else{
+			setUserName(localStorage.getItem("username"));
+			localStorage.getItem("username")
+		};
 		// POST request using fetch with async/await
 		const requestOptions = {
 			method: "GET",
@@ -56,12 +71,18 @@ function AllAudits() {
 			setLoader(false);
 		}
 	};
-
+	const updateUserName =  (e) => {
+         setUserName(e.target.value);
+		localStorage.setItem("username", userName);
+      };
 	return (
 		<div>
+
 			{loader === false ? (
-				<div Style="margin:auto; text-align:center; width:80%; justifyContent:center; alignItems:center; ">
-					<br></br>
+				<div Style="margin:auto; text-align:center; width:82%; justifyContent:center; alignItems:center; ">
+					<br></br><br></br>
+					<TextField id="userName" value={userName} onChange={updateUserName}  label="UserName" variant="outlined" Style="width:13vh;margin-left:1vh;float:right;"/>
+
 					<Link
 						to="/add-audit"
 						Style="color:gray;text-decoration:none;"
@@ -73,8 +94,9 @@ function AllAudits() {
 						<Button variant="contained" color="primary">
 							Click Here
 						</Button>
+					<br></br>
 					</Link>
-
+					<br></br>
 					{data.map((item) => {
 						return (
 							<AuditItem
