@@ -1,6 +1,5 @@
 import Skeleton from "react-loading-skeleton";
 import React from "react";
-import axios from "axios";
 import { useState } from "react";
 import AuditItem from './../Components/AuditItem';
 import {Link, useHistory } from "react-router-dom";
@@ -39,9 +38,10 @@ function AllAudits() {
 		}
 	}
       const edit = (code) => {
-        console.log("from edit");
-    
+		history.push("/edit-audit/"+code);
+
       };
+
 
 	return (
 		<div Style="margin:auto; text-align:center; width:80%; justifyContent:center; alignItems:center; ">
@@ -66,7 +66,7 @@ function AllAudits() {
                      updatedAt={item.updatedAt}
                      createdBy={item.createdBy}
                      updatedBy={item.updatedBy}
-                     edit = {item.edit}
+                     edit = {edit}
                    />
 				})}
 			{/* <Skeleton width={300} />

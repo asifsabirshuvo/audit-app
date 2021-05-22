@@ -7,18 +7,23 @@ import {Link} from "react-router-dom";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import axios from "axios";
-import { useHistory } from "react-router-dom";
+import { useHistory , useParams} from "react-router-dom";
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
 }
-export default function AddAudit() {
+export default function EditAudit() {
     const history = useHistory();
+    const [editingCode, setEditingCode] = useState("");
     const [name, setName] = useState("");
     const [address, setAddress] = useState("");
     const [description, setDescription] = useState("");
     const [latitude, setLatitude] = useState("");
     const [longitude, setLongitude] = useState("");
+    const [createdBy, setCreatedBy] = useState("");
+    const [createdAt, setCreatedAt] = useState("");
+    const [updatedBy, setUpdatedBy] = useState("");
+    const [updatedAt, setUpdatedAt] = useState("");
     const [open, setOpen] = React.useState(false);
     const [slackBarMsg, setSlackBarMsg] = React.useState("");
 
@@ -33,10 +38,33 @@ export default function AddAudit() {
         setOpen(false);
         setSlackBarMsg("");
     };
+    let { code } = useParams();
 
+    React.useEffect(() => {
+      getSingleData(code);
+      setEditingCode(code);
+    }, []);
+
+    async function getSingleData(code){
+      const response = await axios.get('http://localhost:4000/api/v1/audit/'+code);
+      
+      if(response.data.success){
+        const data = response.data.message;
+          setName(data.name);
+          setAddress(data.address);
+          setDescription(data.description);
+          setLatitude(data.latitude);
+          setLongitude(data.longitude);
+          setCreatedAt(data.createdAt);
+          setCreatedBy(data.createdBy);
+          setUpdatedAt(data.updatedAt);
+          setUpdatedBy(data.updatedBy);
+        }
+  };
 
     async function saveData(name, address,description, latitude, longitude){
-        const response = await axios.post('http://localhost:4000/api/v1/audit', {
+        const response = await axios.patch('http://localhost:4000/api/v1/audit', {
+            code: code,
             name: name,
             address: address,
             description: description,
@@ -75,9 +103,9 @@ export default function AddAudit() {
             handleClick('Address can not be empty.');
         }else if(description.trim()===""){
             handleClick('Description can not be empty.');
-        }else if(latitude.trim()==="" || isNaN(latitude.trim())){
+        }else if(isNaN(latitude)){
             handleClick('Latitude is required as a number.');
-        }else if(longitude.trim()==="" || isNaN(longitude.trim())){
+        }else if(isNaN(longitude)){
             handleClick('Longitude is required as a number');
         }else{
             saveData(name, address,description, latitude, longitude);
@@ -89,9 +117,10 @@ export default function AddAudit() {
 
 
     return (
-        <div Style="width:205vh; text-align:center; height:10%;margin-top:10vh;color:grey;  overflow-x: hidden;">
-            <h1>Let's create an entry!</h1>
-            <TextField id="name" value={name} onChange={updateName} label="Name" variant="outlined" Style="width:60%;margin-top:5vh;"/>
+        <div Style="width:205vh; text-align:center; height:10%;margin-top:5vh;color:grey;  overflow-x: hidden;">
+            <h1>Editing entry!</h1>
+            <p>{editingCode}</p>
+            <TextField id="name" value={name} onChange={updateName} label="Name" variant="outlined" Style="width:60%;margin-top:4vh;"/>
             <TextField id="address" value={address} onChange={updateAddress} label="Jurisdiction/City/Region" variant="outlined" Style="width:60%;margin-top:2vh;"/>
             <TextField id="description" value={description} onChange={updateDescription} label="Site Description" variant="outlined" Style="width:60%;margin-top:2vh;"/>
             <br></br>
@@ -100,8 +129,7 @@ export default function AddAudit() {
             <TextField id="latitude" value={latitude} onChange={updateLatitude}  label="latitude" variant="outlined" Style="width:25%;margin-top:2vh;"/>
             <TextField id="longitude" value={longitude} onChange={updateLongitude}  label="longitude" variant="outlined" Style="width:25%;margin-top:2vh;margin-left:2vh"/>
             </div>
-           
-            <div Style="text-align:left; margin-top:12vh;width:205vh;margin-left:41vh;">
+            <div Style="text-align:left; margin-top:14vh;width:205vh;margin-left:41vh;">
             <Button onClick={submitData} variant="outlined" color="primary" startIcon={<SaveIcon/>}>
             save
             </Button>
@@ -110,6 +138,12 @@ export default function AddAudit() {
             cancel
             </Button>
             </Link>
+            </div>
+            <div Style="width:120vh;margin-left:41vh ; margin-top:4vh; text-align:left; background-color: #EEEEEE; padding: 12px;color: grey;">
+            Audit Log:
+            <hr className="br-bar"/>
+            Created by {createdBy} on {createdAt} <br/>
+            Updated by {updatedBy} on {updatedAt}
             </div>      
             <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
                 <Alert onClose={handleClose} severity="error">
